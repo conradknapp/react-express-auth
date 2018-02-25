@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { SECRET } = require("../config/keys");
+const bcrypt = require("bcrypt-nodejs");
 
 exports.signup = async (req, res, next) => {
   const email = req.body.email;
@@ -43,6 +44,46 @@ exports.signup = async (req, res, next) => {
       }
 
       res.json({ token });
+    });
+  });
+};
+
+exports.signin = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  await User.findOne({ email }, (err, user) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (user.length < 1) {
+      return res.status(401).send({
+        error: "Auth failed"
+      });
+    }
+
+    bcrypt.compare(req.body.password, user.password, (err, result) => {
+      if (err) {
+        return next(err);
+      } else if (result) {
+        const token = jwt.sign(
+          {
+            email,
+            password
+          },
+          SECRET,
+          {
+            expiresIn: "1h"
+          }
+        );
+
+        res.json({ token });
+      } else {
+        return res.status(401).send({
+          error: "Auth failed"
+        });
+      }
     });
   });
 };

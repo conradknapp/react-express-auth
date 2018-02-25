@@ -42,7 +42,7 @@ exports.signup = async (req, res, next) => {
         return next(err);
       }
 
-      res.json({ success: true, token });
+      res.json({ token });
     });
   });
 };

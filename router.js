@@ -2,9 +2,9 @@ const auth = require("./controllers/auth");
 const checkAuth = require("./middleware/checkAuth");
 
 module.exports = app => {
-  app.get("/", checkAuth, (req, res) => {
+  app.get("/api", checkAuth, (req, res) => {
     res.send("hi");
   });
-  app.post("/signin", auth.signin);
-  app.post("/signup", auth.signup);
+  app.post("/api/sign_in", auth.signin);
+  app.post("/api/sign_up", auth.signup);
 };

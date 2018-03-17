@@ -1,3 +1,5 @@
-export const SIGN_IN = "SIGN_IN";
+export const SUCCESS_SIGN_IN = "SUCCESS_SIGN_IN";
 
-export const SIGN_UP = "SIGN_UP";
+export const FAIL_SIGN_IN = "FAIL_SIGN_IN";
+
+export const ERROR_SIGN_IN = "ERROR_SIGN_IN";

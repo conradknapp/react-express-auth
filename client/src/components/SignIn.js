@@ -5,9 +5,15 @@ import { connect } from "react-redux";
 
 class SignIn extends Component {
   onFormSubmit({ email, password }) {
-    console.log(email, password);
+    this.props.onSignIn({ email, password }, () => {
+      this.props.history.push("/");
+    });
+  }
 
-    this.props.onSignIn({ email, password });
+  onError() {
+    if (this.props.errorMessage) {
+      return <p style={{ color: "red" }}>{this.props.errorMessage}</p>;
+    }
   }
 
   render() {
@@ -26,9 +32,12 @@ class SignIn extends Component {
           <Field
             {...password}
             placeholder="Password"
+            type="password"
             name="password"
             component="input"
+            autoComplete="true"
           />
+          {this.onError()}
           <button type="submit">Submit</button>
         </form>
       </div>
@@ -36,7 +45,11 @@ class SignIn extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return { errorMessage: state.auth.payload };
+};
+
 export default reduxForm({
   form: "signin",
   fields: ["email", "password"]
-})(connect(null, { onSignIn })(SignIn));
+})(connect(mapStateToProps, { onSignIn })(SignIn));

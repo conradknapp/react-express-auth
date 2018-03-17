@@ -57,7 +57,7 @@ exports.signin = async (req, res, next) => {
       return next(err);
     }
 
-    if (user.length < 1) {
+    if (!user) {
       return res.status(401).send({
         error: "Auth failed"
       });
